@@ -3,31 +3,17 @@ workflows:
     name: Android Build
     environment:
       groups:
-        - keystore
+        - unity_credentials
       vars:
-        UNITY_VERSION: "2022.3.25f1" # Sesuaikan
+        UNITY_VERSION: "2022.3.25f1"
     scripts:
-      - name: Install Unity
-        script: |
-          curl -o unity.ini https://raw.githubusercontent.com/CodeMagicHQ/unity-activate/main/unity.ini
-          python3 -m pip install unity-activate
-          unity-activate activate --username $UNITY_EMAIL --password $UNITY_PASSWORD --serial $UNITY_SERIAL
-      - name: Build Android
+      - name: Build
         script: |
           /Applications/Unity/Hub/Editor/$UNITY_VERSION/Unity.app/Contents/MacOS/Unity \
             -batchmode \
             -quit \
-            -nographics \
             -projectPath "$CM_BUILD_DIR" \
             -executeMethod BuildScript.BuildAndroid \
             -logFile build.log
     artifacts:
       - build/**/*.apk
-    publishing:
-      email:
-        recipients:
-          - your_email@example.com
-cache:
-  cache_paths:
-    - ~/.unity
-    - $CM_BUILD_DIR/Library
