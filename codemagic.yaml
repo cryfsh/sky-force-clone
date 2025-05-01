@@ -27,3 +27,7 @@ workflows:
       email:
         recipients:
           - your_email@example.com
+cache:
+  cache_paths:
+    - ~/.unity
+    - $CM_BUILD_DIR/Library
